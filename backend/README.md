@@ -2,6 +2,8 @@
 
 ## API Endpoints
 
+### User Endpoints
+
 ### POST /users/register
 
 #### Description
@@ -165,6 +167,8 @@ Example:
 }
 ```
 
+## Captain Endpoints
+
 ### POST /captains/register
 
 #### Description
@@ -216,5 +220,112 @@ Example:
   "message": "Captain registered successfully."
 }
 ```
+### POST /captains/login
 
+#### Description
+This endpoint is used to log in an existing captain.
+
+#### Request Body
+The request body should be a JSON object containing the following fields:
+
+- `email` (string, required): The email address of the captain.
+- `password` (string, required): The password for the captain account.
+
+Example:
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+#### Response
+If the request is successful, the response will have a status of 200 and a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful.
+- `message` (string): A message indicating the result of the request.
+- `token` (string): A JWT token that can be used to authenticate future requests.
+
+Example:
+```json
+{
+  "success": true,
+  "message": "Login successful.",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQG1haWwuY29tIiwiaWF0IjoxNjA5MjYxMzQ5LCJleHAiOjE2MDkyNjQ5NDl9.8ZqYqCvYh0FjRkPzUf4M1dQ7yG6wqR3oGy6U8L5o1Ko"
+}
+```
+
+If the request fails, the response will have a status of 400 and a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful.
+- `message` (string): A message indicating the reason for the failure.
+
+Example:
+```json
+{
+  "success": false,
+  "message": "Invalid email or password."
+}
+```
+
+### GET /captains/profile
+
+#### Description
+This endpoint is used to get the profile information of the currently logged in captain.
+
+#### Request Headers
+The request should include an `Authorization` header with the JWT token obtained during login.
+
+Example:
+```
+Authorization: Bearer <token>
+```
+
+#### Response
+If the request is successful, the response will have a status of 200 and a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful.
+- `data` (object): An object containing the profile information of the captain.
+
+Example:
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+}
+```
+
+### GET /captains/logout
+
+#### Description
+This endpoint is used to log out the currently logged in captain.
+
+#### Request Headers
+The request should include an `Authorization` header with the JWT token obtained during login.
+
+Example:
+```
+Authorization: Bearer <token>
+```
+
+#### Response
+If the request is successful, the response will have a status of 200 and a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful.
+- `message` (string): A message indicating the result of the request.
+
+Example:
+```json
+{
+  "success": true,
+  "message": "Captain logged out successfully."
+}
+```
 
