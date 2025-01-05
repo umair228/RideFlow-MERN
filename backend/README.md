@@ -103,3 +103,65 @@ Example:
   "message": "Invalid email or password."
 }
 ```
+
+### GET /users/profile
+
+#### Description
+This endpoint is used to get the profile information of the currently logged in user.
+
+#### Request Headers
+The request should include an `Authorization` header with the JWT token obtained during login.
+
+Example:
+```
+Authorization: Bearer <token>
+```
+
+#### Response
+If the request is successful, the response will have a status of 200 and a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful.
+- `data` (object): An object containing the profile information of the user.
+
+Example:
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "email@email.com"
+    }
+}
+```
+
+### GET /users/logout
+
+#### Description
+This endpoint is used to log out the currently logged in user.
+
+#### Request Headers
+The request should include an `Authorization` header with the JWT token obtained during login.
+
+Example:
+```
+Authorization: Bearer <token>
+```
+
+#### Response
+If the request is successful, the response will have a status of 200 and a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful.
+- `message` (string): A message indicating the result of the request.
+
+Example:
+```json
+{
+  "success": true,
+  "message": "User logged out successfully."
+}
+```
+
