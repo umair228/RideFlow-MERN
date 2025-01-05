@@ -165,3 +165,56 @@ Example:
 }
 ```
 
+### POST /captains/register
+
+#### Description
+This endpoint is used to register a new captain.
+
+#### Request Body
+The request body should be a JSON object containing the following fields:
+
+- `fullname`: An object containing:
+  - `firstname` (string, required): The first name of the captain. Must be at least 3 characters long.
+  - `lastname` (string, optional): The last name of the captain. Must be at least 3 characters long.
+- `email` (string, required): The email address of the captain. Must be a valid email format.
+- `password` (string, required): The password for the captain account. Must be at least 6 characters long.
+- `vehicle`: An object containing:
+  - `color` (string, required): The color of the vehicle. Must be at least 3 characters long.
+  - `plate` (string, required): The plate number of the vehicle. Must be at least 3 characters long.
+  - `capacity` (number, required): The capacity of the vehicle. Must be a number.
+  - `vehicleType` (string, required): The type of the vehicle. Must be one of `car`, `motorcycle`, or `auto rickshaw`.
+
+Example:
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+
+```
+
+#### Response
+If the request is successful, the response will have a status of 200 and a JSON object with the following fields:
+
+- `success` (boolean): Indicates whether the request was successful.
+- `message` (string): A message indicating the result of the request.
+
+Example:
+```json
+{
+  "success": true,
+  "message": "Captain registered successfully."
+}
+```
+
+
