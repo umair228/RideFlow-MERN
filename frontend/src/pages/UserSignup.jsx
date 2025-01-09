@@ -1,44 +1,58 @@
-import React, {useState} from 'react';
-import FormsHeader from "./FormsHeader.jsx";
-import {Link} from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
+import FormsHeader from '../pages/FormsHeader';
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { UserDataContext } from '../context/UserContext'
+
+
 
 const UserSignup = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [userData, setUserData] = useState({});
+    const [ email, setEmail ] = useState('')
+    const [ password, setPassword ] = useState('')
+    const [ firstName, setFirstName ] = useState('')
+    const [ lastName, setLastName ] = useState('')
 
-    const generateUsername = (firstName, lastName) => {
-        return `${firstName}${lastName}${uuidv4().slice(0, 8)}`;
-    };
+    const navigate = useNavigate()
 
 
-    const submitHandler = (e) => {
-        e.preventDefault();
 
-        setUserData({
-            fullName: {
-                firstName,
-                lastName
+    const { user, setUser } = useContext(UserDataContext)
+
+
+
+
+    const submitHandler = async (e) => {
+        e.preventDefault()
+        const newUser = {
+            fullname: {
+                firstname: firstName,
+                lastname: lastName
             },
-            username: generateUsername(firstName, lastName),
-            email,
-            password
-        });
+            email: email,
+            password: password
+        }
 
-        setEmail('');
-        setPassword('');
-        setFirstName('');
-        setLastName('');
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
 
+        if (response.status === 201) {
+            const data = response.data
+            setUser(data.user)
+            localStorage.setItem('token', data.token)
+            navigate('/home')
+        }
+
+
+        setEmail('')
+        setFirstName('')
+        setLastName('')
+        setPassword('')
 
     }
+
     return (
         <div className='p-7 h-screen flex flex-col justify-between'>
             <div>
-                <FormsHeader/>
+                <FormsHeader />
                 <form onSubmit={submitHandler}>
                     <h3 className='text-lg w-1/2 font-medium mb-2'>What's your name</h3>
                     <div className='flex gap-4 mb-6'>
@@ -77,7 +91,7 @@ const UserSignup = () => {
                         type="password"
                         placeholder="password"
                     />
-                    <button className='bg-[#111] text-white font-semibold mt-7 mb-7 rounded px-4 py-2 w-full text-lg'>
+                    <button type="submit" className='bg-[#111] text-white font-semibold mt-7 mb-7 rounded px-4 py-2 w-full text-lg'>
                         Sign up
                     </button>
                 </form>
@@ -94,3 +108,6 @@ const UserSignup = () => {
 };
 
 export default UserSignup;
+
+
+
