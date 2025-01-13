@@ -105,7 +105,10 @@ const Home = () => {
 
     return (
         <div className='h-screen relative'>
-            {<FormsHeader/>}
+            <div>
+                <img className='w-16 absolute top-4 left-4' src='https://static.thenounproject.com/png/3381642-200.png'
+                     alt='rideflow logo'/>
+            </div>
             <div className='h-screen w-screen'>
                 {/* image for temporary use  */}
                 <img
