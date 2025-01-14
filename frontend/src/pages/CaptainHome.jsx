@@ -1,18 +1,57 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {Link} from "react-router-dom";
+import CaptainDetails from "../components/CaptainDetails";
+import RidePopUp from "../components/RidePopUp.jsx";
+import ConfirmRidePopUp from "../components/ConfirmRidePopUp.jsx";
+import {useGSAP} from "@gsap/react";
+import gsap from "gsap";
 
 const CaptainHome = () => {
+    const [ridePopupPanel, setRidePopupPanel] = useState(true);
+    const [confirmRidePopupPanel, setConfirmRidePopupPanel] = useState(false);
+
+    const ridePopupPanelRef = useRef();
+    const confirmRidePopupPanelRef = useRef();
+
+    useGSAP(function () {
+        if (ridePopupPanel) {
+            gsap.to(ridePopupPanelRef.current, {
+                transform: 'translateY(0)'
+            })
+        } else {
+            gsap.to(ridePopupPanelRef.current, {
+                transform: 'translateY(100%)'
+            })
+        }
+    }, [ridePopupPanel])
+
+    useGSAP(function () {
+        if (confirmRidePopupPanel) {
+            gsap.to(confirmRidePopupPanelRef.current, {
+                transform: 'translateY(0)'
+            })
+        } else {
+            gsap.to(confirmRidePopupPanelRef.current, {
+                transform: 'translateY(100%)'
+            })
+        }
+    }, [confirmRidePopupPanel])
+
     return (
         <div className={'h-screen'}>
-            <div className={'fixed p-3 top-0 flex'}>
+            {/* Header Section */}
+            <div className={'fixed p-3 top-0  z-10'}>
                 <img className={'w-16'} src="https://static.thenounproject.com/png/3381642-200.png" alt="logo"/>
-                <Link to='/home '
-                      className={'fixed right-4 top-4 h-10 w-10 bg-white flex items-center justify-center rounded-full'}>
+                <Link
+                    to='/captain/logout'
+                    className={'fixed right-4 top-4 h-10 w-10 bg-white flex items-center justify-center rounded-full shadow-md'}
+                >
                     <i className={'text-3xl font-lg ri-logout-box-r-line'}></i>
                 </Link>
             </div>
 
-            <div className='h-1/2'>
+            {/* Upper Half Section */}
+            <div className='h-3/4'>
                 {/* image for temporary use  */}
                 <img
                     className='h-full w-full object-cover'
@@ -20,35 +59,17 @@ const CaptainHome = () => {
                     alt='backimage'
                 />
             </div>
+            {/* Lower Half Section */}
+            <CaptainDetails/>
 
-            <div className={'h-1/2 p-6'}>
-                <div className={'flex items-center justify-between'}>
-                    <div className={'flex items-center justify-start gap-3 '}>
-                        <img className={'h-20 w-20 rounded-full object-cover'} src="https://sb.kaleidousercontent.com/67418/1920x1545/c5f15ac173/samuel-raita-ridxdghg7pw-unsplash.jpg" alt=""/>
-                        <h4 className={'text-xl font-medium'}>Haris Khan</h4>
-                    </div>
-                    <div>
-                        <h4 className={'text-xl font-semibold'}>PKR 500.00</h4>
-                        <p className={'text-base font-medium text-gray-600'}>Earned</p>
-                    </div>
-                    <div className={'flex justify-center gap-5 items-start'}>
-                        <div className={'text-center'}>
-                            <i className={'text-2xl font-thin ri-timer-2-line'}></i>
-                            <h5 className={'text-lg font-medium'}>10.2</h5>
-                            <p className={'text-base text-gray-600'}>Hours Online</p>
-                        </div>
-                        <div className={'text-center'}>
-                            <i className={'text-2xl font-thin ri-speed-up-line'}></i>
-                            <h5 className={'text-lg font-medium'}>150</h5>
-                            <p className={'text-base text-gray-600'}>per/Km</p>
-                        </div>
-                        <div className={'text-center'}>
-                            <i className={'text-2xl font-thin ri-booklet-line'}></i>
-                            <h5>3</h5>
-                            <p className={'text-base text-gray-600'}>Messages</p>
-                        </div>
-                    </div>
-                </div>
+            <div ref={ridePopupPanelRef}
+                 className='fixed w-full z-10 bottom-0 translate-y-full px-3 py-6 bg-white px-3 py-6 pt-12'>
+                <RidePopUp setPopupPanel={setRidePopupPanel} setConfirmRidePopupPanel={setConfirmRidePopupPanel} />
+            </div>
+
+            <div ref={confirmRidePopupPanelRef}
+                 className='h-screen fixed w-full z-10 bottom-0 translate-y-full px-3 py-6 bg-white px-3 py-6 pt-12'>
+                <ConfirmRidePopUp setConfirmRidePopupPanel={setConfirmRidePopupPanel} setPopupPanel={setRidePopupPanel}/>
             </div>
         </div>
     );
